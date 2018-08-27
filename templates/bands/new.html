@@ -1,0 +1,7 @@
+<h1>New Band</h1>
+
+<%= form_for(band, {action: "/bands"}) { %>
+  <%= f.InputTag("Name") %>
+  <%= f.TextArea("Bio", {rows: 10}) %>
+  <%= f.SubmitTag("Save", {class: "btn btn-primary"}) %>
+<% } %>

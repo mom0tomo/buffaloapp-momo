@@ -48,7 +48,22 @@ func App() *buffalo.App {
 		app.Use(translations())
 
 		app.GET("/", HomeHandler)
+		app.GET("/hello", func(c buffalo.Context) error {
+			name := c.Param("name")
+			if name == "" {
+				name = "World"
+				if sname, ok := c.Session().Get("greeting").(string); ok && sname != "" {
+					name = sname
+				}
+			}
+			c.Session().Set("greeting", name)
+			return c.Render(200, r.String("Hello, %s!\n", name))
+		})
 
+		app.GET("/bands/new", BandsNew)
+		app.POST("/bands", BandsCreate)
+
+		app.Resource("/widgets", WidgetsResource{})
 		app.ServeFiles("/", assetsBox) // serve files from the public directory
 	}
 
